@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+
+{% from "includes/_form-helper.html" import render_field %}
+
+<!-- Centered square container -->
+<div id="1" class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="shadow p-4" style="width: 600px;">
+    <h1 class="display-6 text-center mb-4">Sign Up</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('sign_up') }}">
+      
+      <!-- Add the hidden input for user_type -->
+      <input type="hidden" name="user_type" id="user_type" value="">
+
+      <div class="mb-3">
+        {{ render_field(form.first_name, class="form-control", id="first_name_input") }}
+      </div>
+
+      <div class="mb-3">
+        {{ render_field(form.last_name, class="form-control") }}
+      </div>
+
+      <div class="mb-3">
+        {{ render_field(form.email, class="form-control") }}
+      </div>
+
+      <div class="mb-3">
+        {{ render_field(form.password, class="form-control") }}
+        <p style="color:gray; font-size: 14px;">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+        <p id="passworderrormsg" style="font-size: 11px;"></p>
+      </div>
+
+      <div class="mb-3">
+        {{ render_field(form.confirmpassword, class="form-control") }}
+        <p id="confirmpassworderrormsg" style="font-size: 11px;"></p>
+      </div>
+
+      <div class="text-center">
+        <input type="button" value="Sign Up" class="btn btn-primary w-100" onclick="button1click()">
+      </div>
+  </div>
+</div>
+
+<!-- Step 2: User Type Selection -->
+<div id="2" class="container d-none">
+  <div class="row justify-content-center p-4">
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+
+      <div class="col-lg-6 mb-4">
+        <div class="card cursor-pointer" onclick="selectUserType('Youth')" style="background-color: rgb(228, 216, 193);">
+          <div class="card-body d-flex justify-content-center align-items-center mx-auto" style="width: 300px; height: 300px;">
+            <h5 class="card-title">Youth</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-4">
+        <div class="card cursor-pointer" onclick="selectUserType('Senior')" style="background-color: rgb(228, 216, 193);">
+          <div class="card-body d-flex justify-content-center align-items-center mx-auto" style="width: 300px; height: 300px;">
+            <h5 class="card-title">Senior</h5>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div id="3" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">Hi <span id="firstnametext">User</span>!</h5>
+      <p class="card-text">You will be choosing your display name and profile now.</p>
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button3click()">Click me to go to the next page!</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div id="4" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">What would you like your display name to be?</h5>
+        <p style="font-size: 13px;">This display name is what everyone will see your name as. You will be able to change this again later in the settings.</p>
+          <div class="mb-3">
+            {{ render_field(form.display_name, class="form-control",id="display_name_input") }}
+          </div>
+        <p style="font-size: 13px;">Feel free to put your display name as anything appropriate. You are also free to put your display name as your real name, if you would like.</p>
+      <P class="card-text">You can change your display name at a later date.</P>
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button4click()">Click me to go to the next page!</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div id="5" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">What would you like your profile picture to be?</h5>
+        <p style="font-size: 13px;">This is not mandatory. This profile picture is what everyone will see your name as. You will be able to change this again later in the settings.</p>
+          <div class="mb-3">
+            {{ render_field(form.profile_picture, class="form-control") }}
+          </div>
+        <p style="font-size: 13px;">Feel free to put your profile picture as anything approprite.</p>
+      <P class="card-text">You can change your profile picture at a later date.</P>
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button5click()">Click me to go to the next page!</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div id="6" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">Hello <span id="displaynametext">User</span>!</h5>
+      <p class="card-text">We'll be going through some preferences and interests!</p>
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button6click()">Click me to go to the next page!</a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="7" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">What skills do you want to teach?</h5>
+
+    <div class="container">
+    <div class="row g-4 justify-content-center align-items-center" style="height: 300px;">
+    
+    <!-- Card 1 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://cdn-kdnkj.nitrocdn.com/qYmjBhqTAqJorzweuYZZmpnSbrlDEHHj/assets/images/optimized/rev-38580b7/www.academyoflearning.com/wp-content/uploads/2025/05/Proper-hand-position-for-touch-typing-certification.png" class="card-img-top" alt="Card image 1" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Typing</h5>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://i0.wp.com/newdigitalage.co/wp-content/uploads/2022/06/iStock-1334436084-jpg.webp?fit=1024%2C683&ssl=1" class="card-img-top" alt="Card image 2" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Gaming</h5>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://www.toysrus.com.sg/dw/image/v2/BDGJ_PRD/on/demandware.static/-/Sites-master-catalog-toysrus/default/dw40e5eb47/5/e/9/c/5e9c90d5f66eb0207905ca8204163569514bd559_126856_i1.JPG?sw=500&sh=500&q=75" class="card-img-top" alt="Card image 3" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Rubik's Cubing</h5>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    </div>
+
+
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button7click()">Click me to go to the next page!</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div id="8" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">What skills do you want to learn?</h5>
+
+    <div class="container">
+    <div class="row g-4 justify-content-center align-items-center" style="height: 300px;">
+    
+    <!-- Card 1 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://www.health.com/thmb/wfkIOj5dW5H6QLhXqEFHw87ow08=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Health-GettyImages-1477430966-506a007e48744d5488a6ee1c0b729134.jpg" class="card-img-top" alt="Card image 1" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Cooking</h5>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://i0.wp.com/highschool.latimes.com/wp-content/uploads/2019/02/musical-notes-clipart-musical-performance-692507-3948022.jpg?fit=1600%2C603&ssl=1" class="card-img-top" alt="Card image 2" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Music</h5>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <div class="card h-100" style="background-color: rgb(158, 136, 93); width: 150px; height: 250px;">
+        <img src="https://foyle.eu/wp-content/uploads/2020/01/languages.png" class="card-img-top" alt="Card image 3" style="height: 100px; width: 100%; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">Language</h5>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    </div>
+
+
+      <div class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button8click()">Click me to go to the next page!</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div id="9" class="container d-none">
+<div class="row justify-content-center p-4">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+<div class="col-lg-6 mb-40">
+  <div class="card">
+    <div class="card-body text-center d-flex flex-column" style="height: 500px; background-color: rgb(228, 216, 193)">
+      <h5 class="card-title">You're all set!</h5>
+      <p class="card-text">That's it! You can get started now!</p>
+      <a href="/" class="btn mt-auto mx-auto" style="background-color: rgb(158, 136, 93); width: 35%;" onclick="button9click()">Click me to go to the home page!</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</form>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Get the input element and the <p> element where the first name will be displayed
+const FirstNameInput = document.getElementById("first_name_input");
+const FirstNameText = document.getElementById("firstnametext");
+
+    // Add an event listener to update the <p> element dynamically as the user types
+FirstNameInput.addEventListener("input", function() {
+    const FirstNameValue = FirstNameInput.value;
+        
+  // If the input field has value, update the <p> tag with the first name
+    if (FirstNameValue) {
+        FirstNameText.textContent = FirstNameValue;
+    }else {
+    // If the input is empty, default to "User"
+      FirstNameText.textContent = "User";
+      }
+    });
+const one = document.getElementById("1")
+const two = document.getElementById("2")
+const three = document.getElementById("3")
+const four = document.getElementById("4")
+const five = document.getElementById("5")
+const six = document.getElementById("6")
+const seven = document.getElementById("7")
+const eight = document.getElementById("8")
+const nine = document.getElementById("9")
+
+function button1click() {
+  const password = document.querySelector('input[name="password"]').value;
+  const confirmPassword = document.querySelector('input[name="confirmpassword"]').value;
+  const passworderrormsg = document.getElementById("passworderrormsg");
+  const confirmpassworderrormsg = document.getElementById("confirmpassworderrormsg");
+
+  if (password.length < 8) {
+    passworderrormsg.textContent = "Password must be at least 8 characters long.";
+    confirmpassworderrormsg.textContent = "";
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    passworderrormsg.textContent = "Passwords do not match.";
+    confirmpassworderrormsg.textContent = "Passwords do not match.";
+    return;
+  }
+  
+  one.classList.add("d-none");
+  two.classList.remove("d-none");
+}
+
+// Select the hidden input for user_type
+const userTypeInput = document.getElementById('user_type');
+
+function selectUserType(userType) {
+  // Set the value of the hidden input field to the selected user type
+  userTypeInput.value = userType;
+
+  // Move to the next step (Step 3 in this case)
+  document.getElementById("2").classList.add("d-none");
+  document.getElementById("3").classList.remove("d-none");
+}
+
+function button3click() {
+  three.classList.add("d-none");
+  four.classList.remove("d-none");
+}
+
+function button4click() {
+  four.classList.add("d-none");
+  five.classList.remove("d-none");
+}
+
+function button5click() {
+  five.classList.add("d-none");
+  six.classList.remove("d-none");
+}
+
+const DisplayNameInput = document.getElementById("display_name_input");
+const DisplayNameText = document.getElementById("displaynametext");
+
+DisplayNameInput.addEventListener("input", function() {
+  const DisplayNameValue = DisplayNameInput.value;
+  if (DisplayNameValue) {
+    DisplayNameText.textContent = DisplayNameValue;
+  }else {
+    DisplayNameText.textContent = "User";
+  }
+});
+
+function button6click() {
+  six.classList.add("d-none");
+  seven.classList.remove("d-none");
+}
+
+function button7click() {
+  seven.classList.add("d-none");
+  eight.classList.remove("d-none");
+}
+
+function button8click() {
+  eight.classList.add("d-none");
+  nine.classList.remove("d-none");
+}
+
+function button9click() {
+  event.preventDefault();
+  eight.classList.add("d-none");
+  nine.classList.add("d-none");
+  document.querySelector('form').submit();
+}
+</script>
+{% endblock %}
