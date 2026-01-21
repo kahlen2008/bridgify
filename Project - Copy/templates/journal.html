@@ -1,0 +1,1068 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="journal-container">
+    <div class="hero-section">
+        <div class="hero-overlay">
+            <h1 class="hero-title">"Share a memory,<br> Learn a skill"</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-2 pr-4">
+                <div class="mb-4">
+                    <h5 class="font-weight-bold mb-3" style="color: var(--leather);">I want to...</h5>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterLearn"
+                            name="filter_type" value="Learn">
+                        <label class="custom-control-label" for="filterLearn">Learn a Skill</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterTeach"
+                            name="filter_type" value="Teach">
+                        <label class="custom-control-label" for="filterTeach">Teach Others</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterMemory"
+                            name="filter_type" value="Memory">
+                        <label class="custom-control-label" for="filterMemory">Share Memory</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="font-weight-bold mb-3" style="color: var(--leather);">Topic</h5>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="catTech"
+                            name="filter_cat" value="Technology">
+                        <label class="custom-control-label" for="catTech">Technology</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="catCook"
+                            name="filter_cat" value="Cooking">
+                        <label class="custom-control-label" for="catCook">Cooking</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="catCraft"
+                            name="filter_cat" value="Arts & Crafts">
+                        <label class="custom-control-label" for="catCraft">Arts & Crafts</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="catLang"
+                            name="filter_cat" value="Language">
+                        <label class="custom-control-label" for="catLang">Language</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="font-weight-bold mb-3" style="color: var(--leather);">Location</h5>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterNorth"
+                            name="filter_loc" value="North">
+                        <label class="custom-control-label" for="filterNorth">North</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterEast"
+                            name="filter_loc" value="East">
+                        <label class="custom-control-label" for="filterEast">East</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterWest"
+                            name="filter_loc" value="West">
+                        <label class="custom-control-label" for="filterWest">West</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" class="custom-control-input filter-checkbox" id="filterCentral"
+                            name="filter_loc" value="Central">
+                        <label class="custom-control-label" for="filterCentral">Central</label>
+                    </div>
+                </div>
+                <button id="applyFiltersBtn" class="btn btn-leather btn-block mt-3 shadow-sm">
+                    Apply Filters
+                </button>
+            </div>
+
+            <div class="col-md-10">
+                <div class="row">
+                    {% for post in posts %}
+                    <div class="col-md-6 mb-4 post-item" data-type="{{ post['post_type'] }}"
+                        data-category="{{ post['category'] }}" data-location="{{ post['location'] }}">
+
+                        <div class="post-card">
+                            <div class="d-flex p-3 align-items-center">
+                                <div class="post-user-avatar">
+                                    {% if post['profile_pic'] %}
+                                    <img src="{{ url_for('static', filename='images/' + post['profile_pic']) }}"
+                                        alt="{{ post['username'] }}"
+                                        style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                    {% else %}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ url_for('profile.profile', user_id=post['user_id']) }}"
+                                    class="post-username">
+                                    {{ post['username'] }}
+                                </a>
+                                <button class="btn ml-auto p-0 text-white" data-toggle="modal"
+                                    data-target="#postOptionsModal{{ post['id'] }}">
+                                    <i class="fa-solid fa-ellipsis fa-xl"></i>
+                                </button>
+                            </div>
+
+                            <img src="{{ post['image_url'] }}" class="w-100" style="height:350px; object-fit:cover;">
+
+                            <div class="p-3">
+                                <div class="post-actions mb-3">
+                                    <button class="heart-container heart-btn">
+                                        <i class="fa-regular fa-heart heart-icon"></i>
+                                    </button>
+                                    <button class="btn p-0 text-white" data-toggle="modal"
+                                        data-target="#commentModal{{ post['id'] }}">
+                                        <i class="fa-regular fa-comment"></i>
+                                    </button>
+
+                                    <button class="btn p-0 text-white">
+                                        <i class="fa-solid fa-share-nodes"></i>
+                                    </button>
+                                </div>
+                                <p class="mb-1"><strong>{{ post['caption'] }}</strong></p>
+                                <div class="post-location mt-1">
+                                    <i class="fa-solid fa-location-dot"></i> {{ post['location'] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post Options Modal (Delete/Report) -->
+                    <div class="modal fade" id="postOptionsModal{{ post['id'] }}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                            <div class="modal-content text-center" style="border-radius: 15px;">
+                                {% if post['user_id'] == current_user_id %}
+                                <!-- Own post - Show Delete option -->
+                                <form action="{{ url_for('posts.delete_post', post_id=post['id']) }}" method="POST">
+                                    <button type="submit"
+                                        class="btn btn-link text-danger w-100 py-3 border-bottom font-weight-bold"
+                                        style="text-decoration:none;">
+                                        <i class="fa-solid fa-trash-can mr-2"></i>Delete
+                                    </button>
+                                </form>
+                                {% else %}
+                                <!-- Other's post - Show Report option -->
+                                <button type="button"
+                                    class="btn btn-link text-warning w-100 py-3 border-bottom font-weight-bold"
+                                    style="text-decoration:none;" onclick="showReportModal({{ post['id'] }})">
+                                    <i class="fa-solid fa-flag mr-2"></i>Report
+                                </button>
+                                {% endif %}
+                                <a href="{{ url_for('profile.profile', user_id=post['user_id']) }}"
+                                    class="btn btn-link text-primary w-100 py-3 border-bottom"
+                                    style="text-decoration:none;">
+                                    <i class="fa-solid fa-user mr-2"></i>View Profile
+                                </a>
+                                <button class="btn btn-link text-dark w-100 py-3" data-dismiss="modal"
+                                    style="text-decoration:none;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="commentModal{{ post['id'] }}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content comment-modal-content">
+                                <div class="container-fluid p-0">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-7 d-none d-md-block">
+                                            <img src="{{ post['image_url'] }}" class="comment-modal-img">
+                                        </div>
+
+                                        <div class="col-md-5 comment-sidebar">
+
+                                            <div class="p-3 border-bottom border-secondary d-flex align-items-start">
+                                                <div class="user-avatar-sm mr-3"></div>
+                                                <div class="d-flex flex-column flex-grow-1">
+                                                    <span class="font-weight-bold">{{ post['username'] }}</span>
+                                                    <p class="mb-0 mt-1" style="font-size: 0.9rem;">{{ post['caption']
+                                                        }}</p>
+                                                </div>
+                                                <button type="button" class="close text-white ml-2"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="comment-scroll-area" id="comment-list-{{ post['id'] }}">
+                                                {% for comment in post['comments'] %}
+                                                <div id="comment-row-{{ comment['id'] }}"
+                                                    class="d-flex mb-3 align-items-start {% if comment['parent_id'] %}ml-5 border-left pl-3 border-secondary{% endif %}">
+                                                    <div class="user-avatar-sm mr-2" style="width: 25px; height: 25px;">
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <span class="font-weight-bold" style="font-size: 0.85rem;">{{
+                                                            comment['username'] }}</span>
+                                                        <p class="mb-0" style="font-size: 0.85rem;">{{
+                                                            comment['content'] }}</p>
+
+                                                        <div class="d-flex align-items-center mt-1">
+                                                            <span class="comment-action-btn"
+                                                                onclick="setReply({{ post['id'] }}, {{ comment['id'] }}, '{{ comment['username'] }}')">
+                                                                Reply
+                                                            </span>
+                                                            <span class="comment-action-btn"
+                                                                onclick="confirmDeleteComment({{ comment['id'] }})">
+                                                                Delete
+                                                            </span>
+                                                            <span class="comment-action-btn" onclick="toggleLike(this)">
+                                                                <i class="fa-regular fa-heart"></i> <span
+                                                                    class="like-count">0</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="p-3 border-top border-secondary mt-auto">
+                                                <div id="reply-indicator-{{ post['id'] }}" class="small mb-2 d-none"
+                                                    style="color: var(--manuscript);">
+                                                    Replying to <span id="reply-name-{{ post['id'] }}"></span>
+                                                    <button type="button" class="btn btn-sm text-white p-0 ml-2"
+                                                        onclick="cancelReply({{ post['id'] }})">&times;</button>
+                                                </div>
+
+                                                <form action="{{ url_for('comments.add_comment', post_id=post['id']) }}"
+                                                    method="POST" class="d-flex align-items-center ajax-comment-form">
+                                                    <input type="hidden" name="parent_id"
+                                                        id="parent-id-{{ post['id'] }}" value="">
+                                                    <i class="fa-regular fa-face-smile mr-2 fa-lg"></i>
+                                                    <input type="text" name="comment_content"
+                                                        id="comment-input-{{ post['id'] }}"
+                                                        class="form-control comment-input"
+                                                        placeholder="Add a comment..." required>
+                                                    <button type="submit"
+                                                        class="btn btn-link text-white font-weight-bold"
+                                                        style="text-decoration:none;">Post</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn-create" data-toggle="modal" data-target="#createModal">+ Create</button>
+
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content journal-modal position-relative overflow-hidden">
+
+            <button type="button" class="close position-absolute" data-dismiss="modal"
+                style="top: 20px; right: 25px; z-index: 10; font-size: 2rem;">
+                &times;
+            </button>
+
+            <div class="modal-body p-4">
+                <h4 class="text-center mb-4 mt-2" style="color: var(--bindery);">Creating New Post</h4>
+
+                <div id="create-step-1" class="text-center py-4">
+                    <div class="mb-4">
+                        <i class="fa-regular fa-images fa-4x mr-2" style="color: var(--leather);"></i>
+                        <i class="fa-solid fa-video fa-4x ml-2" style="color: var(--leather);"></i>
+                    </div>
+
+                    <h5 class="mb-4" style="color: var(--leather);">Drag your photos and video here</h5>
+
+                    <button class="btn btn-outline-dark btn-block font-weight-bold py-3 mb-3"
+                        style="border-radius: 10px; border-width: 2px;" onclick="showUploadForm()">
+                        Select from Computer
+                    </button>
+
+                    <button class="btn btn-outline-dark btn-block font-weight-bold py-3"
+                        style="border-radius: 10px; border-width: 2px;" onclick="showDraftsList()">
+                        Select Draft
+                    </button>
+                </div>
+
+                <div id="create-step-drafts" class="d-none">
+                    <h5 class="text-center mb-3">Your Drafts</h5>
+                    <div id="drafts-container" style="max-height: 400px; overflow-y: auto;">
+                    </div>
+                    <button class="btn btn-link text-muted mt-3 w-100" onclick="resetModal()">Back</button>
+                </div>
+
+                <form id="create-step-2" action="{{ url_for('posts.create_post') }}" method="POST"
+                    enctype="multipart/form-data" class="d-none">
+
+                    <input type="hidden" name="draft_id" id="draft-id-input">
+
+                    <div class="upload-box text-center py-4 mb-3" id="drop-zone">
+                        <input type="file" name="photo" id="file" hidden onchange="previewFile(this)">
+
+                        <label for="file" id="file-label" style="cursor:pointer; color: var(--leather);">
+                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i><br>
+                            <strong>Click to Upload</strong>
+                        </label>
+                        <div id="image-preview" class="d-none">
+                            <img id="preview-img" src=""
+                                style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Caption</label>
+                        <textarea name="caption" id="caption-input" class="form-control" rows="2"
+                            placeholder="What's on your mind?"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="font-weight-bold">I am posting to...</label>
+                                <select name="post_type" id="type-input" class="form-control">
+                                    <option value="Memory">Share a Memory</option>
+                                    <option value="Teach">Teach a Skill</option>
+                                    <option value="Learn">Ask to Learn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Topic</label>
+                                <select name="category" id="category-input" class="form-control">
+                                    <option value="Technology">Technology</option>
+                                    <option value="Cooking">Cooking</option>
+                                    <option value="Arts & Crafts">Arts & Crafts</option>
+                                    <option value="Language">Language</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Location</label>
+                        <select name="location" id="location-input" class="form-control" required>
+                            <option value="" disabled selected>Select a location</option>
+                            <option value="North">North</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="Central">Central</option>
+                        </select>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <button type="submit" name="action" value="draft"
+                                class="btn btn-block btn-leather font-weight-bold py-2">
+                                Save Draft
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" name="action" value="publish"
+                                class="btn btn-block btn-leather font-weight-bold py-2">
+                                Share Post
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content text-center" style="border-radius: 15px;">
+            <form id="deleteCommentForm" action="" method="POST">
+                <button type="submit" class="btn btn-link text-danger w-100 py-3 border-bottom font-weight-bold"
+                    style="text-decoration:none;">Delete</button>
+            </form>
+            <button class="btn btn-link text-dark w-100 py-3" data-dismiss="modal"
+                style="text-decoration:none;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Report Post Modal -->
+<div class="modal fade" id="reportPostModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 20px; background: var(--parchment);">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title font-weight-bold" style="color: var(--bindery);">
+                    <i class="fa-solid fa-flag mr-2" style="color: var(--leather);"></i>Report Post
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Why are you reporting this post?</p>
+                <form id="reportForm">
+                    <input type="hidden" id="reportPostId" name="post_id" value="">
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="reason" id="reason1"
+                            value="Inappropriate content" checked>
+                        <label class="form-check-label" for="reason1">Inappropriate content</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="reason" id="reason2"
+                            value="Spam or misleading">
+                        <label class="form-check-label" for="reason2">Spam or misleading</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="reason" id="reason3"
+                            value="Harassment or bullying">
+                        <label class="form-check-label" for="reason3">Harassment or bullying</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="reason" id="reason4"
+                            value="False information">
+                        <label class="form-check-label" for="reason4">False information</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="reason" id="reason5" value="Other">
+                        <label class="form-check-label" for="reason5">Other</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-leather font-weight-bold py-2">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>Submit Report
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Report Success Toast -->
+<div id="reportToast" class="report-toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="reportToastMessage">Report submitted successfully!</span>
+</div>
+
+<style>
+    /* --- 1. Global & Typography --- */
+    body {
+        background-color: var(--parchment);
+        font-family: 'Montserrat', sans-serif !important;
+    }
+
+    /* --- 2. Hero Section --- */
+    .journal-container .hero-section {
+        background-image: url('{{ url_for("static", filename="images/image 1.png") }}');
+        background-size: cover;
+        background-position: center;
+        height: 300px;
+        position: relative;
+        margin: 0 -15px;
+        margin-top: 70px;
+        /* Account for fixed navbar */
+    }
+
+    .journal-container .hero-overlay {
+        background: rgba(0, 0, 0, 0.2);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        /* Vertically center */
+        justify-content: flex-start;
+        /* Keep left aligned */
+        padding-left: 60px;
+    }
+
+    .journal-container .hero-title {
+        color: white;
+        font-weight: 700;
+        font-size: 48px;
+        /* Updated to 48px as requested */
+        max-width: 600px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
+    }
+
+    /* --- 3. Post Cards --- */
+    .post-card {
+        background: var(--leather);
+        border-radius: 20px;
+        color: white;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .post-actions i {
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .post-actions i:hover {
+        transform: scale(1.1);
+    }
+
+    .heart-btn {
+        background: none !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        padding: 0;
+        color: white;
+        cursor: pointer;
+    }
+
+    .heart-btn:hover,
+    .liked {
+        color: #e74c3c;
+    }
+
+    /* --- 4. Modals (Create & Delete) --- */
+    .journal-modal,
+    .modal-content {
+        background: var(--parchment);
+        border-radius: 25px;
+        border: none;
+    }
+
+    /* ADDED: Custom Styling for Inputs in Modal */
+    .journal-modal .form-control {
+        border: 1px solid #ced4da !important;
+        /* Reverted to light grey */
+        border-radius: 15px !important;
+        /* Kept rounded corners */
+        background-color: white;
+        color: #495057;
+    }
+
+    .journal-modal .form-control:focus {
+        box-shadow: none;
+        border-color: var(--leather) !important;
+    }
+
+    .btn-create {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        background: var(--leather);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1050;
+    }
+
+    .upload-box {
+        border: 2px dashed var(--leather);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-leather {
+        background: var(--leather);
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    /* --- 5. Comment Modal Layout --- */
+    .comment-modal-content {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .comment-modal-img {
+        width: 100%;
+        height: 600px;
+        object-fit: cover;
+    }
+
+    .comment-sidebar {
+        background: var(--leather);
+        color: white;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment-scroll-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        scrollbar-width: thin;
+    }
+
+    .comment-scroll-area::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .comment-scroll-area::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+    }
+
+    .comment-input {
+        background: transparent !important;
+        border: none !important;
+        color: white !important;
+        box-shadow: none !important;
+        padding-left: 0;
+    }
+
+    .comment-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .user-avatar-sm {
+        width: 35px;
+        height: 35px;
+        background-color: #ccc;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .comment-action-btn {
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.6);
+        margin-right: 15px;
+        transition: color 0.2s;
+    }
+
+    .comment-action-btn:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    @keyframes heartBeat {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .animate-beat {
+        animation: heartBeat 0.4s ease-in-out;
+    }
+
+    @media (min-width: 1200px) {
+        .modal-xl {
+            max-width: 1100px;
+        }
+    }
+
+    /* Post Username Link */
+    .post-username {
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+        transition: opacity 0.2s;
+    }
+
+    .post-username:hover {
+        color: white;
+        opacity: 0.8;
+        text-decoration: underline;
+    }
+
+    /* Report Toast */
+    .report-toast {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        transform: translateX(120%);
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 1100;
+    }
+
+    .report-toast.show {
+        transform: translateX(0);
+    }
+
+    .report-toast.error {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+    }
+
+    .report-toast i {
+        font-size: 1.2rem;
+    }
+
+    /* Post User Avatar */
+    .post-user-avatar {
+        width: 35px;
+        height: 35px;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .post-user-avatar i {
+        font-size: 14px;
+        color: white;
+    }
+
+    .post-location {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Journal Script Loaded Successfully");
+
+        // --- 1. GLOBAL LIKE FUNCTION ---
+        window.toggleLike = function (btn) {
+            const icon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan ? countSpan.innerText : 0);
+
+            if (icon.classList.contains('fa-solid')) {
+                // Unlike
+                icon.classList.remove('fa-solid', 'text-danger');
+                icon.classList.add('fa-regular');
+                if (countSpan) countSpan.innerText = Math.max(0, count - 1);
+            } else {
+                // Like
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-danger');
+                if (countSpan) countSpan.innerText = count + 1;
+
+                // Animation
+                icon.classList.add('animate-beat');
+                setTimeout(() => icon.classList.remove('animate-beat'), 400);
+            }
+        };
+
+        document.querySelectorAll('.heart-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                toggleLike(this);
+            });
+        });
+
+        // --- 2. FILTERING LOGIC ---
+        const applyBtn = document.getElementById('applyFiltersBtn');
+
+        if (applyBtn) {
+            applyBtn.addEventListener('click', function () {
+                console.log("Apply button clicked!");
+                const btn = this;
+                const originalText = btn.innerText;
+                btn.innerText = "Applying...";
+
+                filterPosts();
+
+                setTimeout(() => { btn.innerText = originalText; }, 300);
+            });
+        }
+
+        function filterPosts() {
+            const selectedTypes = Array.from(document.querySelectorAll('input[name="filter_type"]:checked')).map(cb => {
+                if (cb.value === 'Learn') return 'Teach';
+                if (cb.value === 'Teach') return 'Learn';
+                return cb.value;
+            });
+
+            const selectedCats = Array.from(document.querySelectorAll('input[name="filter_cat"]:checked')).map(cb => cb.value);
+            const selectedLocs = Array.from(document.querySelectorAll('input[name="filter_loc"]:checked')).map(cb => cb.value);
+
+            const posts = document.querySelectorAll('.post-item');
+
+            posts.forEach(post => {
+                const pType = (post.dataset.type || "").trim();
+                const pCat = (post.dataset.category || "").trim();
+                const pLoc = (post.dataset.location || "").trim();
+
+                const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(pType);
+                const catMatch = selectedCats.length === 0 || selectedCats.includes(pCat);
+                const locMatch = selectedLocs.length === 0 || selectedLocs.includes(pLoc);
+
+                if (typeMatch && catMatch && locMatch) {
+                    post.classList.remove('d-none');
+                } else {
+                    post.classList.add('d-none');
+                }
+            });
+        }
+
+        // --- 3. MODAL & FORM LOGIC ---
+        window.previewFile = function (input) {
+            const preview = document.getElementById('preview-img');
+            const label = document.getElementById('file-label');
+            const container = document.getElementById('image-preview');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                label.classList.add('d-none');
+                container.classList.remove('d-none');
+            }
+            if (file) reader.readAsDataURL(file);
+        };
+
+        if (typeof $ !== 'undefined') {
+            $('#createModal').on('hidden.bs.modal', function () {
+                document.getElementById('create-step-1').classList.remove('d-none');
+                document.getElementById('create-step-2').classList.add('d-none');
+                document.getElementById('create-step-drafts').classList.add('d-none');
+                document.getElementById('create-step-2').reset();
+                const draftInput = document.getElementById('draft-id-input');
+                if (draftInput) draftInput.value = "";
+                document.getElementById('image-preview').classList.add('d-none');
+                document.getElementById('file-label').classList.remove('d-none');
+            });
+        }
+
+        window.showUploadForm = function () {
+            document.getElementById('create-step-1').classList.add('d-none');
+            document.getElementById('create-step-2').classList.remove('d-none');
+        };
+
+        window.showDraftsList = function () {
+            document.getElementById('create-step-1').classList.add('d-none');
+            document.getElementById('create-step-drafts').classList.remove('d-none');
+
+            fetch('/get_drafts')
+                .then(response => response.json())
+                .then(drafts => {
+                    const container = document.getElementById('drafts-container');
+                    container.innerHTML = '';
+
+                    if (drafts.length === 0) {
+                        container.innerHTML = '<p class="text-center text-muted">No drafts found.</p>';
+                        return;
+                    }
+
+                    drafts.forEach(draft => {
+                        const div = document.createElement('div');
+                        div.className = 'd-flex align-items-center p-2 mb-2 border rounded';
+                        div.style.cursor = 'pointer';
+                        div.style.background = 'white';
+                        div.innerHTML = `
+                        <img src="${draft.image_url}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" class="mr-3">
+                        <div class="flex-grow-1">
+                            <small class="font-weight-bold d-block text-truncate" style="max-width: 150px;">${draft.caption || 'No Caption'}</small>
+                            <small class="text-muted">${draft.timestamp}</small>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-muted"></i>
+                    `;
+                        div.onclick = () => loadDraftIntoForm(draft);
+                        container.appendChild(div);
+                    });
+                });
+        };
+
+        window.loadDraftIntoForm = function (draft) {
+            document.getElementById('create-step-drafts').classList.add('d-none');
+            document.getElementById('create-step-2').classList.remove('d-none');
+            document.getElementById('draft-id-input').value = draft.id;
+            document.getElementById('caption-input').value = draft.caption;
+            document.getElementById('location-input').value = draft.location;
+            document.getElementById('type-input').value = draft.post_type;
+            document.getElementById('category-input').value = draft.category;
+
+            const preview = document.getElementById('preview-img');
+            const label = document.getElementById('file-label');
+            const container = document.getElementById('image-preview');
+
+            preview.src = draft.image_url;
+            label.classList.add('d-none');
+            container.classList.remove('d-none');
+        };
+
+        window.resetModal = function () {
+            if (typeof $ !== 'undefined') {
+                $('#createModal').modal('hide');
+            }
+        };
+
+        // --- 5. COMMENT & REPLY LOGIC ---
+        window.setReply = function (postId, commentId, username) {
+            document.getElementById(`parent-id-${postId}`).value = commentId;
+            const indicator = document.getElementById(`reply-indicator-${postId}`);
+            const nameSpan = document.getElementById(`reply-name-${postId}`);
+
+            nameSpan.innerText = username;
+            indicator.classList.remove('d-none');
+            document.getElementById(`comment-input-${postId}`).focus();
+        };
+
+        window.cancelReply = function (postId) {
+            document.getElementById(`parent-id-${postId}`).value = "";
+            document.getElementById(`reply-indicator-${postId}`).classList.add('d-none');
+        };
+
+        window.confirmDeleteComment = function (commentId) {
+            const deleteForm = document.getElementById('deleteCommentForm');
+            deleteForm.action = '/delete_comment/' + commentId;
+            if (typeof $ !== 'undefined') $('#deleteCommentModal').modal('show');
+        };
+
+        document.querySelectorAll('.ajax-comment-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const actionUrl = this.action || `/add_comment/${this.id.split('-')[2]}`;
+
+                fetch(actionUrl, { method: 'POST', body: formData })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const postId = actionUrl.split('/').pop();
+                            const commentList = document.getElementById(`comment-list-${postId}`);
+
+                            const newCommentHtml = `
+                        <div id="comment-row-${data.id}" class="d-flex mb-3 align-items-start ${data.parent_id ? 'ml-5 border-left pl-3 border-secondary' : ''}">
+                            <div class="user-avatar-sm mr-2" style="width: 25px; height: 25px;"></div>
+                            <div class="flex-grow-1">
+                                <span class="font-weight-bold" style="font-size: 0.85rem;">${data.username}</span>
+                                <p class="mb-0" style="font-size: 0.85rem;">${data.content}</p>
+                                <div class="d-flex align-items-center mt-1">
+                                    <span class="comment-action-btn" onclick="setReply(${postId}, ${data.id}, '${data.username}')">Reply</span>
+                                    <span class="comment-action-btn" onclick="confirmDeleteComment(${data.id})">Delete</span>
+                                    <span class="comment-action-btn" onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i> <span class="like-count">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                            commentList.insertAdjacentHTML('beforeend', newCommentHtml);
+                            commentList.scrollTop = commentList.scrollHeight;
+                            form.reset();
+                            cancelReply(postId);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+
+        const delCommentForm = document.getElementById('deleteCommentForm');
+        if (delCommentForm) {
+            delCommentForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const form = this;
+                const actionUrl = form.action;
+                const commentId = actionUrl.split('/').pop();
+
+                fetch(actionUrl, { method: 'POST', body: new FormData(form) })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            if (typeof $ !== 'undefined') $('#deleteCommentModal').modal('hide');
+                            const row = document.getElementById('comment-row-' + commentId);
+                            if (row) row.remove();
+                        }
+                    });
+            });
+        }
+
+        // --- 6. REPORT POST FUNCTIONALITY ---
+        window.showReportModal = function (postId) {
+            // Close the options modal first
+            if (typeof $ !== 'undefined') {
+                $('#postOptionsModal' + postId).modal('hide');
+            }
+
+            // Set the post ID in the report form
+            document.getElementById('reportPostId').value = postId;
+
+            // Show the report modal after a short delay
+            setTimeout(() => {
+                if (typeof $ !== 'undefined') {
+                    $('#reportPostModal').modal('show');
+                }
+            }, 300);
+        };
+
+        // Handle report form submission
+        const reportForm = document.getElementById('reportForm');
+        if (reportForm) {
+            reportForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const postId = document.getElementById('reportPostId').value;
+                const reason = document.querySelector('input[name="reason"]:checked').value;
+
+                const formData = new FormData();
+                formData.append('reason', reason);
+
+                fetch(`/report_post/${postId}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Close the modal
+                        if (typeof $ !== 'undefined') {
+                            $('#reportPostModal').modal('hide');
+                        }
+
+                        // Show toast
+                        const toast = document.getElementById('reportToast');
+                        const message = document.getElementById('reportToastMessage');
+
+                        if (data.status === 'success') {
+                            toast.classList.remove('error');
+                            message.textContent = data.message;
+                        } else {
+                            toast.classList.add('error');
+                            message.textContent = data.message || 'Failed to submit report';
+                        }
+
+                        toast.classList.add('show');
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                        }, 4000);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        const toast = document.getElementById('reportToast');
+                        const message = document.getElementById('reportToastMessage');
+                        toast.classList.add('error');
+                        message.textContent = 'An error occurred. Please try again.';
+                        toast.classList.add('show');
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                        }, 4000);
+                    });
+            });
+        }
+
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% block title %}Bridgify - Explore{% endblock %}
+
+{% block content %}
+<div class="explore-page">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-overlay">
+            <h1 class="hero-title">Bridging Generations,<br>Building Community</h1>
+        </div>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="container text-center py-5">
+        <h2 class="welcome-header">Welcome to Bridgify</h2>
+        <p class="welcome-text">
+            Bridgify connects seniors and youth through meaningful exchanges of skills, stories,
+            and experiences. Explore our features that we offer below to start building
+            connections across generations.
+        </p>
+    </div>
+
+    <!-- Feature Cards Section -->
+    <div class="container pb-5">
+        <div class="row">
+            <!-- Skills Market Card -->
+            <div class="col-md-6 mb-4">
+                <div class="feature-card" id="skills-card">
+                    <div class="feature-header skills-header">
+                        <div class="feature-icon">
+                            <i class="fa-regular fa-lightbulb"></i>
+                        </div>
+                        <h4 class="feature-title">Skills Market</h4>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-text">
+                            Share what you know, learn something new. Connect with mentors or learners
+                            across generations to exchange skills from baking to digital literacy.
+                        </p>
+                        <a href="#" class="feature-btn" onclick="showComingSoon('Skills Market')">
+                            Browse Skills
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Card -->
+            <div class="col-md-6 mb-4">
+                <div class="feature-card" id="events-card">
+                    <div class="feature-header events-header">
+                        <div class="feature-icon">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <h4 class="feature-title">Events</h4>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-text">
+                            Join community workshops and classes designed for intergenerational connection.
+                            Book your spot in events from traditional crafts to tech tutorials.
+                        </p>
+                        <a href="#" class="feature-btn" onclick="showComingSoon('Events')">
+                            Explore Events
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journal Card -->
+            <div class="col-md-6 mb-4">
+                <div class="feature-card" id="journal-card">
+                    <div class="feature-header journal-header">
+                        <div class="feature-icon">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </div>
+                        <h4 class="feature-title">Journal</h4>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-text">
+                            Document and share life stories through text, photos, or audio. Connect across
+                            generations by reading, commenting, and preserving meaningful memories together.
+                        </p>
+                        <a href="{{ url_for('posts.journal') }}" class="feature-btn">
+                            Read Stories
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Groups Card -->
+            <div class="col-md-6 mb-4">
+                <div class="feature-card" id="groups-card">
+                    <div class="feature-header groups-header">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h4 class="feature-title">Groups</h4>
+                    </div>
+                    <div class="feature-body">
+                        <p class="feature-text">
+                            Join interest-based communities to chat, share photos, and organize meetups.
+                            From gardening to book clubs, build lasting friendships with neighbors who share your
+                            passions.
+                        </p>
+                        <a href="#" class="feature-btn" onclick="showComingSoon('Groups')">
+                            Join Groups
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Coming Soon Toast/Modal -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    <div id="comingSoonToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
+        aria-atomic="true" style="background-color: var(--leather);">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMessage">
+                <i class="fa-solid fa-clock mr-2"></i> Coming Soon!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"
+                onclick="hideToast()"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --parchment: #f6f2ea;
+        --manuscript: #c5a790;
+        --leather: #b78160;
+        --leather-light: #d4a574;
+        --leather-dark: #8b5a3c;
+        --bindery: #34000b;
+        --text-dark: #333333;
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .explore-page {
+        background-color: var(--parchment);
+        min-height: 100vh;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        height: 280px;
+        background: url('{{ url_for("static", filename="images/hero.jpg") }}') center 30% / cover;
+        position: relative;
+        margin-top: 70px;
+        /* Account for fixed navbar */
+    }
+
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(139, 90, 60, 0.4), rgba(183, 129, 96, 0.3));
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 60px;
+    }
+
+    .hero-title {
+        color: white;
+        font-weight: 700;
+        font-size: 2.8rem;
+        max-width: 650px;
+        /* Increased to keep "Bridging Generations," on one line */
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+        line-height: 1.2;
+    }
+
+    /* Welcome Section */
+    .welcome-header {
+        color: var(--bindery);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .welcome-text {
+        color: #666;
+        max-width: 650px;
+        margin: 0 auto;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* Feature Cards */
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Feature Headers with Background Images */
+    .feature-header {
+        padding: 25px 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .skills-header {
+        background: linear-gradient(135deg, rgba(183, 129, 96, 0.85), rgba(197, 167, 144, 0.75)),
+        url('{{ url_for("static", filename="images/SkillsMarket.png") }}');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .events-header {
+        background: linear-gradient(135deg, rgba(139, 90, 60, 0.85), rgba(183, 129, 96, 0.75)),
+        url('{{ url_for("static", filename="images/Events.png") }}');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .journal-header {
+        background: linear-gradient(135deg, rgba(197, 167, 144, 0.85), rgba(183, 129, 96, 0.75)),
+        url('{{ url_for("static", filename="images/Journal.png") }}');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .groups-header {
+        background: linear-gradient(135deg, rgba(183, 129, 96, 0.85), rgba(139, 90, 60, 0.75)),
+        url('{{ url_for("static", filename="images/Groups.png") }}');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .feature-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: white;
+        backdrop-filter: blur(5px);
+    }
+
+    .feature-title {
+        color: white;
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin: 0;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Feature Body */
+    .feature-body {
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .feature-text {
+        color: #555;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        flex-grow: 1;
+        margin-bottom: 20px;
+    }
+
+    .feature-btn {
+        display: block;
+        background: linear-gradient(135deg, var(--leather) 0%, var(--leather-light) 100%);
+        color: white;
+        text-align: center;
+        padding: 12px 25px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .feature-btn:hover {
+        background: linear-gradient(135deg, var(--leather-dark) 0%, var(--leather) 100%);
+        color: white;
+        text-decoration: none;
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(183, 129, 96, 0.4);
+    }
+
+    /* Toast Styling */
+    .toast {
+        border-radius: 12px;
+        min-width: 280px;
+    }
+
+    .toast-body {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+            padding-right: 20px;
+        }
+
+        .hero-overlay {
+            padding-left: 30px;
+        }
+
+        .hero-section {
+            height: 220px;
+        }
+
+        .welcome-header {
+            font-size: 1.6rem;
+        }
+
+        .feature-header {
+            padding: 20px;
+        }
+
+        .feature-body {
+            padding: 20px;
+        }
+    }
+
+    /* Card Click Animation */
+    .feature-card:active {
+        transform: scale(0.98);
+    }
+
+    /* Ripple Effect */
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple-animation 0.6s linear;
+        pointer-events: none;
+    }
+
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toast functionality
+        window.showComingSoon = function (feature) {
+            event.preventDefault();
+            const toast = document.getElementById('comingSoonToast');
+            const message = document.getElementById('toastMessage');
+            message.innerHTML = `<i class="fa-solid fa-clock mr-2"></i> <strong>${feature}</strong> - Coming Soon!`;
+
+            toast.style.display = 'block';
+            toast.classList.add('show');
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                hideToast();
+            }, 3000);
+        };
+
+        window.hideToast = function () {
+            const toast = document.getElementById('comingSoonToast');
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 300);
+        };
+
+        // Add ripple effect to cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                // Only trigger ripple on the header area
+                if (e.target.closest('.feature-header')) {
+                    const header = this.querySelector('.feature-header');
+                    const rect = header.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+
+                    header.appendChild(ripple);
+
+                    setTimeout(() => ripple.remove(), 600);
+                }
+            });
+        });
+
+        // Smooth scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}
